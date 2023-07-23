@@ -1,3 +1,4 @@
+const { genToken } = require("../helpers/token.helper");
 const User = require("../models/user.model");
 // register user
 const registerUser = async (req, res) => {
@@ -12,8 +13,9 @@ const registerUser = async (req, res) => {
       address,
       ocupation
     );
-
-    res.status(200).json(user);
+    // create token here
+    const token = genToken(user._id);
+    res.status(200).json({ user, token });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -25,13 +27,25 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.login(email, password);
-    res.status(200).json(user);
+
+    //  create token here
+    const token = genToken(user._id);
+    res.status(200).json({ user, token });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
 
+//get all users
+
+const getAllUsers = async (req, res) => {
+  const users = await User.find({});
+
+  res.status(200).json(users);
+};
+
 module.exports = {
   registerUser,
   loginUser,
+  getAllUsers,
 };

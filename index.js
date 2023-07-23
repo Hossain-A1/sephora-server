@@ -21,7 +21,7 @@ app.use(cors({credentials:true}))
 app.get("/", (req, res) => {
   res.status(200).json({ message: "welcome to sephora shop" });
 });
-app.use("/api/user",userRoutes)
+app.use("/api/users",userRoutes)
 
 
 
